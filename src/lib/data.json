@@ -1,0 +1,52 @@
+{
+  "featured_nursing_homes": [
+    {
+      "name": "北京大爱书院养老社区",
+      "location": "北京",
+      "area": "大兴",
+      "price_range": "¥10000-18000/月"
+    },
+    {
+      "name": "徐州正和乐颐康园",
+      "location": "江苏",
+      "area": "徐州",
+      "price_range": "¥2000-4200/月"
+    },
+    {
+      "name": "北京市昌平区静馨养老中心",
+      "location": "北京",
+      "area": "昌平区",
+      "price_range": "¥3000-20900/月"
+    },
+    {
+      "name": "徐州奎山一院无障碍老年病院",
+      "location": "江苏",
+      "area": "徐州",
+      "price_range": "¥3200-6000/月"
+    },
+    {
+      "name": "成都·双楠智慧康养社区",
+      "location": "成都",
+      "area": "双楠",
+      "price_range": "¥4200-15000/月"
+    },
+    {
+      "name": "深圳市宝安区福永敬老院",
+      "location": "深圳",
+      "area": "宝安区",
+      "price_range": "¥6000-22000/月"
+    },
+    {
+      "name": "郑州·颐和老年康养中心",
+      "location": "郑州",
+      "area": "金水区",
+      "price_range": "¥3900-11000/月"
+    },
+    {
+      "name": "杭州·绿城怡园颐养中心",
+      "location": "杭州",
+      "area": "滨江区",
+      "price_range": "¥6500-9600/月"
+    }
+  ]
+}
