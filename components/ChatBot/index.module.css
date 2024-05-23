@@ -1,0 +1,88 @@
+.page-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 98vh;
+  padding: 0 30%;
+  background: white;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.message-title {
+  text-align: center;
+  font-size: 48px;
+  font-weight: bold;
+  margin-bottom: 32px;
+  color: #4fa767;
+}
+
+.message-list {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  padding: 10px;
+}
+
+.message-wrapper {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  height: 100%;
+  width: 100%;
+}
+
+.message {
+  max-width: 60%;
+  padding: 10px 20px;
+  border-radius: 10px;
+  word-wrap: break-word;
+}
+
+.message.user {
+  background-color: #efefef;
+  align-self: flex-end;
+  text-align: right;
+  max-width: 60%;
+}
+
+.message.bot {
+  background-color: #d7f8ec;
+  align-self: flex-start;
+  text-align: left;
+  max-width: 60%;
+}
+
+.input-container {
+  display: flex;
+}
+
+.prompt-input {
+  height: 40px;
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-right: 10px;
+}
+
+.prompt-button {
+  padding: 10px;
+  background-color: #4fa767;
+  color: white;
+  font-size: 24px;
+  border: none;
+  border-radius: 8px;
+  min-width: 100px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.prompt-button:hover {
+  background-color: #3f8852;
+}
+
+.button-disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
