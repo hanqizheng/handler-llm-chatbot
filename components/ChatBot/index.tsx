@@ -19,7 +19,7 @@ const ChatBotClient: React.FC<ChatBotProps> = (props) => {
 
     setIsSending(true);
     const newMessage = { type: "user", text: prompt };
-    setMessageQueue([...messageQueue, newMessage, { type: "bot", text: "loading..." }]);
+    setMessageQueue([...messageQueue, newMessage, { type: "bot", text: "思考中..." }]);
     setPrompt("");
 
     try {
@@ -28,7 +28,7 @@ const ChatBotClient: React.FC<ChatBotProps> = (props) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ message: prompt, messageQueue: [...messageQueue, newMessage] }),
+        body: JSON.stringify({ message: prompt }),
       });
 
       const data = await res.json();
@@ -43,9 +43,10 @@ const ChatBotClient: React.FC<ChatBotProps> = (props) => {
         return newQueue;
       });
     } catch (error) {
+      console.error('Error:', error);
       setMessageQueue((prevQueue) => {
         const newQueue = [...prevQueue];
-        newQueue[newQueue.length - 1] = { type: 'bot', text: 'Error occurred. Please try again.' };
+        newQueue[newQueue.length - 1] = { type: 'bot', text: '有错误发生！请重试。' };
         return newQueue;
       });
     }
@@ -90,7 +91,8 @@ const ChatBotClient: React.FC<ChatBotProps> = (props) => {
           className={styles["prompt-input"]}
           value={prompt}
           onChange={(e) => setPrompt(e.target.value)}
-          onKeyPress={handleKeyPress}
+          onKeyDown={handleKeyPress}
+          placeholder="请输入你的问题..."
         />
         <button
           className={classNames(styles["prompt-button"], {

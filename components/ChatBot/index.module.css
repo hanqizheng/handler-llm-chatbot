@@ -87,3 +87,7 @@
   background-color: #ccc;
   cursor: not-allowed;
 }
+
+.button-disabled:hover {
+  background-color: #ccc;
+}
