@@ -1,9 +1,7 @@
 'use client';
 import React, { useState, useEffect, useRef } from "react";
 import classNames from "classnames";
-
 import { ChatBotProps } from "./type";
-
 import styles from "./index.module.css";
 
 const ChatBotClient: React.FC<ChatBotProps> = (props) => {
@@ -16,30 +14,43 @@ const ChatBotClient: React.FC<ChatBotProps> = (props) => {
   const [isSending, setIsSending] = useState<boolean>(false);
   const messageListRef = useRef<HTMLDivElement>(null);
 
-  const handleSend = () => {
+  const handleSend = async () => {
     if (prompt.trim() === "" || isSending) return;
 
     setIsSending(true);
     const newMessage = { type: "user", text: prompt };
-    setMessageQueue([...messageQueue, newMessage]);
+    setMessageQueue([...messageQueue, newMessage, { type: "bot", text: "loading..." }]);
     setPrompt("");
 
-    // Simulate a response with a Promise
-    new Promise((resolve) => {
-      setTimeout(() => {
-        const response = {
-          type: "bot",
-          text: "This is a response to: " + prompt,
-        };
-        resolve(response);
-      }, 1000);
-    }).then((response) => {
-      setMessageQueue((prevQueue) => [
-        ...prevQueue,
-        response as { type: string; text: string },
-      ]);
-      setIsSending(false);
-    });
+    try {
+      const res = await fetch('/api/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message: prompt, messageQueue: [...messageQueue, newMessage] }),
+      });
+
+      const data = await res.json();
+      const responseMessage = {
+        type: 'bot',
+        text: data.message,
+      };
+
+      setMessageQueue((prevQueue) => {
+        const newQueue = [...prevQueue];
+        newQueue[newQueue.length - 1] = responseMessage;
+        return newQueue;
+      });
+    } catch (error) {
+      setMessageQueue((prevQueue) => {
+        const newQueue = [...prevQueue];
+        newQueue[newQueue.length - 1] = { type: 'bot', text: 'Error occurred. Please try again.' };
+        return newQueue;
+      });
+    }
+
+    setIsSending(false);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
