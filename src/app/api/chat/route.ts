@@ -4,11 +4,12 @@ import { agentHandler } from '@/lib/agent';
 export async function POST(request: Request) {
   try {
     const { message } = await request.json();
-    console.log(`Received message: ${message}`);
-    const responseMessage = await agentHandler(message);
-    return NextResponse.json({ message: responseMessage });
+    const stream = await agentHandler(message);
+    return new NextResponse(stream, {
+      headers: { 'Content-Type': 'application/octet-stream' },
+    });
   } catch (error) {
     console.error('Error:', error);
-    // return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ message: '有错误发生！请重试。' }, { status: 500 });
   }
 }
