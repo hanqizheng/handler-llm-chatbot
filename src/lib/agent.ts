@@ -1,6 +1,8 @@
 import { ChatOllama } from "@langchain/community/chat_models/ollama";
 import { HumanMessage } from "@langchain/core/messages";
 
+import { removeEmoji } from "../util";
+
 export const agentHandler = async (message: string) => {
   const chatOllama = new ChatOllama({
     baseUrl: "http://localhost:11434",
@@ -10,7 +12,9 @@ export const agentHandler = async (message: string) => {
     new HumanMessage({ content: message }),
   ]);
 
-  const responseText = response.text;
+  let responseText = response.text;
+  responseText = removeEmoji(responseText); // 过滤掉emoji
+
   const stream = new ReadableStream({
     start(controller) {
       let index = 0;
@@ -24,7 +28,7 @@ export const agentHandler = async (message: string) => {
         }
       }
       push();
-    }
+    },
   });
 
   return stream;
