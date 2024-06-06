@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import React, { useState, useEffect, useRef } from "react";
 import classNames from "classnames";
 import { ChatBotProps } from "./type";
@@ -19,34 +19,46 @@ const ChatBotClient: React.FC<ChatBotProps> = (props) => {
 
     setIsSending(true);
     const newMessage = { type: "user", text: prompt };
-    setMessageQueue([...messageQueue, newMessage, { type: "bot", text: "思考中..." }]);
+    setMessageQueue([
+      ...messageQueue,
+      newMessage,
+      { type: "bot", text: "思考中..." },
+    ]);
     setPrompt("");
 
     try {
-      const res = await fetch('/api/chat', {
-        method: 'POST',
+      const res = await fetch("/api/chat", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ message: prompt }),
       });
 
-      const data = await res.json();
-      const responseMessage = {
-        type: 'bot',
-        text: data.message,
-      };
+      const reader = res?.body?.getReader();
+      const decoder = new TextDecoder();
+      let responseMessage = { type: "bot", text: "" };
 
-      setMessageQueue((prevQueue) => {
-        const newQueue = [...prevQueue];
-        newQueue[newQueue.length - 1] = responseMessage;
-        return newQueue;
-      });
+      while (true) {
+        if (!reader) break;
+        const { value, done } = await reader.read();
+        if (done) break;
+        responseMessage.text += decoder.decode(value, { stream: true });
+
+        setMessageQueue((prevQueue) => {
+          const newQueue = [...prevQueue];
+          newQueue[newQueue.length - 1] = { ...responseMessage };
+          return newQueue;
+        });
+      }
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
       setMessageQueue((prevQueue) => {
         const newQueue = [...prevQueue];
-        newQueue[newQueue.length - 1] = { type: 'bot', text: '有错误发生！请重试。' };
+        newQueue[newQueue.length - 1] = {
+          type: "bot",
+          text: "有错误发生！请重试。",
+        };
         return newQueue;
       });
     }
@@ -69,9 +81,7 @@ const ChatBotClient: React.FC<ChatBotProps> = (props) => {
 
   return (
     <div className={styles["page-container"]}>
-      {messageQueue.length === 0 && (
-        <div className={styles["message-title"]}>春座 AI</div>
-      )}
+      {false && <div className={styles["message-title"]}>春座 AI</div>}
       {messageQueue.length > 0 && (
         <div className={styles["message-list"]} ref={messageListRef}>
           <div className={styles["message-wrapper"]}>
