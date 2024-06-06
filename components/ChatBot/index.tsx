@@ -19,8 +19,8 @@ const ChatBotClient: React.FC<ChatBotProps> = (props) => {
 
     setIsSending(true);
     const newMessage = { type: "user", text: prompt };
-    setMessageQueue([
-      ...messageQueue,
+    setMessageQueue((prevQueue) => [
+      ...prevQueue,
       newMessage,
       { type: "bot", text: "思考中..." },
     ]);
@@ -35,14 +35,16 @@ const ChatBotClient: React.FC<ChatBotProps> = (props) => {
         body: JSON.stringify({ message: prompt }),
       });
 
-      const reader = res?.body?.getReader();
+      if (!res.body) throw new Error("No response body");
+
+      const reader = res.body.getReader();
       const decoder = new TextDecoder();
       let responseMessage = { type: "bot", text: "" };
 
       while (true) {
-        if (!reader) break;
         const { value, done } = await reader.read();
         if (done) break;
+
         responseMessage.text += decoder.decode(value, { stream: true });
 
         setMessageQueue((prevQueue) => {
