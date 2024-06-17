@@ -2,15 +2,6 @@ import { ChatOllama } from "@langchain/community/chat_models/ollama";
 import { HumanMessage } from "@langchain/core/messages";
 import { removeEmoji } from "../util";
 
-// 定义类型守卫
-function isMessageContentString(content: any): content is string {
-  return typeof content === 'string';
-}
-
-function isMessageContentArray(content: any): content is any[] {
-  return Array.isArray(content);
-}
-
 // 处理不同类型的 MessageContent
 function extractTextFromContent(content: any): string {
   if (typeof content === 'string') {
