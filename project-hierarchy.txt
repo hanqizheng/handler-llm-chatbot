@@ -1,0 +1,40 @@
+handler-llm-chatbot
+├─ .DS_Store
+├─ .eslintrc.json
+├─ .gitignore
+├─ README.md
+├─ components
+│  └─ ChatBot
+│     ├─ index.module.css
+│     ├─ index.tsx
+│     └─ type.ts
+├─ next-env.d.ts
+├─ next.config.mjs
+├─ package-lock.json
+├─ package.json
+├─ src
+│  ├─ app
+│  │  ├─ api
+│  │  │  └─ chat
+│  │  │     └─ route.ts
+│  │  ├─ layout.tsx
+│  │  ├─ page.module.css
+│  │  └─ page.tsx
+│  ├─ lib
+│  │  ├─ agent
+│  │  │  ├─ chat.ts
+│  │  │  └─ rag.ts
+│  │  ├─ data
+│  │  │  └─ testData.json
+│  │  ├─ documentLoader
+│  │  │  ├─ localDocLoader.ts
+│  │  │  └─ webLoader.ts
+│  │  ├─ model
+│  │  │  ├─ baseModel.ts
+│  │  │  └─ ollamaModel.ts
+│  │  ├─ splitter
+│  │  │  └─ jsonDataSplitter.ts
+│  │  └─ store
+│  └─ util
+│     └─ index.ts
+└─ tsconfig.json

@@ -1,7 +1,9 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
 import classNames from "classnames";
+
 import { ChatBotProps } from "./type";
+
 import styles from "./index.module.css";
 
 const ChatBotClient: React.FC<ChatBotProps> = (props) => {

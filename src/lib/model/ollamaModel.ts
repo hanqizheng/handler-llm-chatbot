@@ -16,6 +16,10 @@ export class OllamaModel implements BaseModel {
     });
   }
 
+  getChatOllama() {
+    return this.chatOllama;
+  }
+
   async stream(inputMessages: HumanMessage[]): Promise<ReadableStream<Uint8Array>> {
     const responseStream = await this.chatOllama.stream(inputMessages, {});
 
@@ -44,6 +48,40 @@ export class OllamaModel implements BaseModel {
         }
 
         read();
+      },
+    });
+  }
+
+  async imitateStream(
+    inputMessages: HumanMessage[]
+  ): Promise<ReadableStream<Uint8Array>> {
+    const responseStream = await this.chatOllama.stream(inputMessages, {});
+
+    return new ReadableStream({
+      async start(controller) {
+        const reader = responseStream.getReader();
+        const encoder = new TextEncoder();
+
+        async function pump() {
+          const { done, value } = await reader.read();
+          if (done) {
+            controller.close();
+            return;
+          }
+
+          let responseText = extractTextFromContent(value.content);
+          responseText = removeEmoji(responseText); // 过滤掉emoji
+
+          // Encode and send each chunk separately
+          const chunks = responseText.split(""); // Split into characters for truly incremental output
+          chunks.forEach((char) => {
+            controller.enqueue(encoder.encode(char)); // Enqueue each character separately
+          });
+
+          pump(); // Continue pumping data
+        }
+
+        pump().catch((error) => controller.error(error));
       },
     });
   }
